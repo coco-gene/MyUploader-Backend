@@ -28,12 +28,12 @@ public class FileService {
      * @param md5
      * @param file
      */
-    public void upload(String name,
+    public void upload(String appId, String appFileId, String fileName,
                        String md5,
                        MultipartFile file) throws IOException {
         String path = UploadConfig.path + generateFileName();
         FileUtils.write(path, file.getInputStream());
-        fileDao.save(new File(name, md5, path, new Date()));
+        fileDao.save(new File(appId, appFileId, fileName, md5, path, new Date()));
     }
 
     /**
@@ -45,18 +45,18 @@ public class FileService {
      * @param file
      * @throws IOException
      */
-    public void uploadWithBlock(String name,
+    public void uploadWithBlock(String appId, String appFileId, String fileName,
                                 String md5,
                                 Long size,
                                 Integer chunks,
                                 Integer chunk,
                                 MultipartFile file) throws IOException {
-        String fileName = getFileName(md5, chunks);
-        FileUtils.writeWithBlok(UploadConfig.path + fileName, size, file.getInputStream(), file.getSize(), chunks, chunk);
+        String blockFileName = getFileName(md5, chunks);
+        FileUtils.writeWithBlok(UploadConfig.path + blockFileName, size, file.getInputStream(), file.getSize(), chunks, chunk);
         addChunk(md5,chunk);
         if (isUploaded(md5)) {
             removeKey(md5);
-            fileDao.save(new File(name, md5,UploadConfig.path + fileName, new Date()));
+            fileDao.save(new File(appId, appFileId, fileName, md5,UploadConfig.path + blockFileName, new Date()));
         }
     }
 

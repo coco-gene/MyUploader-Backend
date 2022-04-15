@@ -31,9 +31,11 @@ public class FileDaoTests {
     @Before
     public void generateFile() {
         testFile = new File();
+        testFile.setAppId("1");
+        testFile.setAppFileId(UUID.randomUUID().toString());
         testFile.setMd5("121221212");
-        testFile.setName("test");
-        testFile.setUploadTime(new Date());
+        testFile.setFileName("test");
+        testFile.setUploadTime(File.getSecondTimestamp(new Date()));
         testFile.setPath(UUID.randomUUID().toString());
     }
 
@@ -52,7 +54,7 @@ public class FileDaoTests {
      */
     @Test(expected = Exception.class)
     public void testSaveExceptionByNameIsNull() {
-        testFile.setName(null);
+        testFile.setFileName(null);
         fileDao.save(testFile);
     }
 
@@ -88,7 +90,7 @@ public class FileDaoTests {
     @Rollback
     public void testGetByIdSuccess() {
         fileDao.save(testFile);
-        assertNotNull(fileDao.getById(testFile.getId()));
+        assertNotNull(fileDao.getById(testFile.getFileId()));
     }
 
     /**
@@ -107,7 +109,7 @@ public class FileDaoTests {
     @Rollback
     public void testDeleteByIdSuccess() {
         fileDao.save(testFile);
-        assertEquals(1,fileDao.deleteById(testFile.getId()));
+        assertEquals(1,fileDao.deleteById(testFile.getFileId()));
     }
 
     /**
@@ -135,7 +137,7 @@ public class FileDaoTests {
     @Test
     public void testGetByNotExistFileReturnNull() {
         File file = new File();
-        file.setId(new Long(0));
+        file.setFileId(new Long(0));
         assertNull(fileDao.getByFile(file));
     }
 

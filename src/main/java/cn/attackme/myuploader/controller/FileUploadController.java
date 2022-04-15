@@ -21,9 +21,9 @@ public class FileUploadController {
     private FileService fileService;
 
     @PostMapping("/")
-    public void upload(String name,
+    public void upload(String appId, String appFileId, String fileName,
                        String md5,
                        MultipartFile file) throws IOException {
-        fileService.upload(name, md5,file);
+        fileService.upload(appId, appFileId, fileName, md5,file);
     }
 }
