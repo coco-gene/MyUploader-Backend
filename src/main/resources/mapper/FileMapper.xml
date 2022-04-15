@@ -13,7 +13,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        file_id,file_name,md5,path,upload_time
+        file_id,app_id,app_file_id,file_name,md5,path,upload_time
     </sql>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -24,13 +24,19 @@
     </select>
 
     <insert id="save" parameterType="cn.attackme.myuploader.model.File" keyProperty="fileId" useGeneratedKeys="true">
-        insert into file(file_name,md5,path,upload_time) values(#{fileName},#{md5},#{path},#{uploadTime})
+        insert into file(app_id,app_file_id,file_name,md5,path,upload_time) values(#{appId},#{appFileId},#{fileName},#{md5},#{path},#{uploadTime})
     </insert>
 
     <update id="update" parameterType="cn.attackme.myuploader.model.File" >
         <if test="fileId != null">
             update file
             <set>
+                <if test="appId != null">
+                    app_id = #{appId},
+                </if>
+                <if test="appFileId != null">
+                    app_file_id = #{appFileId},
+                </if>
                 <if test="fileName != null">
                     file_name = #{fileName},
                 </if>
@@ -57,8 +63,15 @@
         <include refid="Base_Column_List" />
         from file
         <where>
+            1=1
             <if test="fileId != null">
-                file_id = #{fileId}
+                and file_id = #{fileId}
+            </if>
+            <if test="appId != null">
+                and app_id = #{appId},
+            </if>
+            <if test="appFileId != null">
+                and app_file_id = #{appFileId},
             </if>
             <if test="fileName != null">
                 and file_name = #{fileName}
