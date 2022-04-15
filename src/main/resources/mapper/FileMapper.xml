@@ -68,10 +68,10 @@
                 and file_id = #{fileId}
             </if>
             <if test="appId != null">
-                and app_id = #{appId},
+                and app_id = #{appId}
             </if>
             <if test="appFileId != null">
-                and app_file_id = #{appFileId},
+                and app_file_id = #{appFileId}
             </if>
             <if test="fileName != null">
                 and file_name = #{fileName}
