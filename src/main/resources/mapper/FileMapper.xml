@@ -3,34 +3,36 @@
 
 <mapper namespace="cn.attackme.myuploader.dao.FileDao">
     <resultMap id="BaseResultMap" type="cn.attackme.myuploader.model.File">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
+        <id column="file_id" property="fileId" />
+        <result column="app_id" property="appId" />
+        <result column="app_file_id" property="appFileId" />
+        <result column="file_name" property="fileName" />
         <result column="md5" property="md5" />
         <result column="path" property="path" />
         <result column="upload_time" property="uploadTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,md5,path,upload_time
+        file_id,file_name,md5,path,upload_time
     </sql>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from file
-        where id = #{id}
+        where file_id = #{fileId}
     </select>
 
-    <insert id="save" parameterType="cn.attackme.myuploader.model.File" keyProperty="id" useGeneratedKeys="true">
-        insert into file(name,md5,path,upload_time) values(#{name},#{md5},#{path},#{uploadTime})
+    <insert id="save" parameterType="cn.attackme.myuploader.model.File" keyProperty="fileId" useGeneratedKeys="true">
+        insert into file(file_name,md5,path,upload_time) values(#{fileName},#{md5},#{path},#{uploadTime})
     </insert>
 
     <update id="update" parameterType="cn.attackme.myuploader.model.File" >
-        <if test="id != null">
+        <if test="fileId != null">
             update file
             <set>
-                <if test="name != null">
-                    name = #{name},
+                <if test="fileName != null">
+                    file_name = #{fileName},
                 </if>
                 <if test="md5 != null">
                     md5 = #{md5},
@@ -42,12 +44,12 @@
                     upload_time = #{uploadTime},
                 </if>
             </set>
-            where id = #{id}
+            where file_id = #{fileId}
         </if>
     </update>
 
     <delete id="deleteById" parameterType="java.lang.Long">
-        delete from file where id = #{id}
+        delete from file where file_id = #{fileId}
     </delete>
 
     <select id="getByFile" parameterType="cn.attackme.myuploader.model.File" resultMap="BaseResultMap">
@@ -55,11 +57,11 @@
         <include refid="Base_Column_List" />
         from file
         <where>
-            <if test="id != null">
-                id = #{id}
+            <if test="fileId != null">
+                file_id = #{fileId}
             </if>
-            <if test="name != null">
-                and name = #{name}
+            <if test="fileName != null">
+                and file_name = #{fileName}
             </if>
             <if test="md5 != null">
                 and md5 = #{md5}
