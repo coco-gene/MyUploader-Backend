@@ -10,6 +10,7 @@ CREATE TABLE `file` (
     `file_name` varchar(64) NOT NULL DEFAULT '' COMMENT '文件名称',
     `md5` varchar(32) NOT NULL DEFAULT '' COMMENT 'md5',
     `path` varchar(256) NOT NULL DEFAULT '' COMMENT 'path',
+    `upload_time` int NOT NULL DEFAULT '0' COMMENT '更新时间',
     `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态 -1-删除 1-正常',
     `operator_id` int NOT NULL DEFAULT '0' COMMENT '操作人ID',
     `operator` varchar(20) NOT NULL DEFAULT '' COMMENT '操作人 记录操作人用户名，程序自动执行时记system',
